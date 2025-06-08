@@ -26,3 +26,7 @@ app.listen(3000, () => {
   console.log("====================================".red);
   console.log("Server is running on port 3000.~~~".italic.bold.bgMagenta);
 });
+
+import authRoutes from "./routes/auth.route.js";
+
+app.use("/api/auth", authRoutes);
