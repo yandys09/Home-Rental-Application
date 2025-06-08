@@ -129,14 +129,16 @@ const RegisterPage = () => {
             <img
               src={uploadProfilePic}
               alt="add profile photo"
-              className="w-8 h-8"
+              className="w-8 h-8 cursor-pointer"
             />
           )}
 
-          <p className="text-slate-700 text-lg">Upload Your Photo</p>
+          <p className="text-slate-700 text-lg cursor-pointer">
+            Upload Your Photo
+          </p>
         </label>
         <button
-          className="bg-slate-700 rounded-lg p-3 text-white uppercase hover:opacity-95 disabled:opacity-80"
+          className="bg-slate-700 rounded-lg p-3 text-white uppercase hover:opacity-95 disabled:opacity-80 cursor-pointer"
           disabled={!passwordMatch}
         >
           Register
@@ -146,7 +148,7 @@ const RegisterPage = () => {
       <div className="mt-5 flex gap-2">
         <p>Already have an account?</p>
         <Link to={"/login"}>
-          <span className="text-blue-700">Sign in</span>
+          <span className="text-blue-700">Sign In</span>
         </Link>
       </div>
     </div>
