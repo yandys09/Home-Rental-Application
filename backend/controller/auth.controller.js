@@ -1,12 +1,13 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { errorHandler } from "../utils/error.js";
 
 export const register = async (req, res, next) => {
   try {
     const { firstName, lastName, email, password } = req.body;
 
-// todo: 멀티 이미지 화일 입력
+    // todo: 멀티 이미지 화일 입력
     // const profileImage = req.files[1];
 
     const profileImage = req.file;
@@ -20,7 +21,7 @@ export const register = async (req, res, next) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.status(409).json({ message: "User already exist." });
+      return next(errorHandler(409, "User already exist!"));
     }
 
     const hashedPassword = bcryptjs.hashSync(password, 10);
@@ -38,34 +39,33 @@ export const register = async (req, res, next) => {
       .status(201)
       .json({ message: "User create successfully.", user: newUser });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-export const login = async(req, res) => {
+export const login = async (req, res, next) => {
   try {
-    const { email, password} = req.body;
+    const { email, password } = req.body;
 
-    const validUser = await User.findOne({email})
+    const validUser = await User.findOne({ email });
 
-    if(!validUser){
-      return res.status(409).json({ message: "User doesn't exist!."})
+    if (!validUser) {
+      return next(errorHandler(404, "User not  found!"));
+     
     }
 
-    const validPassword = bcryptjs.compareSync(password, validUser.password)
+    const validPassword = bcryptjs.compareSync(password, validUser.password);
 
     if (!validPassword) {
-      return res.status(400).json({ message: "Wrong credentials!." });
+      return next(errorHandler(400, "Wrong Credentials"));
     }
 
-    const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET)
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
 
-    const { password: pass, ...rest} = validUser._doc;
+    const { password: pass, ...rest } = validUser._doc;
 
-    res.status(200).json({ token, rest})
-
+    res.status(200).json({ token, rest });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message})
+    next(error);
   }
-}
+};
