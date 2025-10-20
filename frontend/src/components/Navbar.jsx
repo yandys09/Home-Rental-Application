@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { IoMdMenu } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
 
 const Navbar = () => {
   const user = useSelector((state) => state.user);
@@ -48,9 +47,8 @@ const Navbar = () => {
           className="h-[50px] flex items-center px-[10px] border border-gray-500 rounded-[30px] gap-2.5 bg-white cursor-pointer hover:shadow-lg"
         >
           <IoMdMenu className="text-slate-600" />
-          {!user ? (
-            <FaUser className="text-slate-600" />
-            
+          {!user.user ? (
+            <FaUser className="text-slate-600 w-6 h-6 object-cover rounded-full" />
           ) : (
             <img
               src={`http://localhost:3000/${user?.user?.profileImagePath.replace(
